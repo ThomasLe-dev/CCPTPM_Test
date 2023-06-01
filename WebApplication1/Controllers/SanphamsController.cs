@@ -42,6 +42,7 @@ namespace WebApplication1.Controllers
                     sanphams = sanphams.Where(p => p.Tenvd.Contains(searchValue));
                 }
             }
+
             switch (sortOrder)
             {
                 case "name_desc":
