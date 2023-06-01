@@ -1,0 +1,49 @@
+﻿@model PagedList.IPagedList<WebApplication1.Models.Sanpham>
+    @using PagedList.Mvc
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css"/>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@using (Html.BeginForm())
+            {
+                <p>
+                    Tìm kiếm @Html.TextBox("searchValue", ViewBag.currentFilter as string)
+                    <input type="submit" value="Tìm"/>
+                </p>
+            }
+<p>
+    @Html.ActionLink("Sắp xếp theo tên", "Index", new { sortOrder = ViewBag.sapXepTheoTen, currentFilter = ViewBag.currentFilter })
+    <span>|</span>
+    @Html.ActionLink("Sắp xếp theo giá", "Index", new {sortOrder = ViewBag.sapXepTheoGia, currentFilter = ViewBag.currentFilter })
+</p>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+    <div class="col-md-4 col-lg-3 text-center table-bordered">
+        Tên danh mục <b>@Html.DisplayFor(modelItem => item.Danhmuc.TenDanhmuc) <br /></b>
+        Tên vật dụng <b>@Html.DisplayFor(modelItem => item.Tenvd) <br /></b>
+        Tên Ảnh <b>@Html.DisplayFor(modelItem => item.TenAnh) <br /></b>
+        @{
+            var path = "~/Content/Images/" + item.Mota;
+            <img src="@Url.Content(path)" width="100" height="100" />
+        } <br />
+        Giá tiền <b>@Html.DisplayFor(modelItem => item.Giatien) <br /></b>
+        Số lượng <b>@Html.DisplayFor(modelItem => item.Soluong) <br /></b>
+        <br />
+        @Html.ActionLink("Edit", "Edit", new { id = item.Mavd }) |
+        @Html.ActionLink("Details", "Details", new { id = item.Mavd }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.Mavd })
+    </div>
+    }
+</div>
+Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new {page, sortOrder = ViewBag.currentSort, currentFilter = ViewBag.currentFilter}))
